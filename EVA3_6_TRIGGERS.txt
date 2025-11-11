@@ -1,0 +1,128 @@
+MySQL Shell 8.0.43
+
+Copyright (c) 2016, 2025, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \conncey
+Unknown command: '\conncey'
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 8
+Server version: 8.0.43 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > use tbd3;
+Default schema set to `tbd3`.
+Fetching global names, object names from `tbd3` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  tbd3  SQL > show tables;
++----------------+
+| Tables_in_tbd3 |
++----------------+
+| actor          |
+| datos          |
+| personas       |
+| prueba         |
+| prueba2        |
++----------------+
+5 rows in set (0.0019 sec)
+ MySQL  localhost:3306 ssl  tbd3  SQL > desc personas;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| rfc        | varchar(10) | NO   | PRI | NULL    |       |
+| nombre     | varchar(50) | NO   |     | NULL    |       |
+| ap_paterno | varchar(50) | NO   |     | NULL    |       |
+| ap_materno | varchar(50) | YES  |     | NULL    |       |
+| fecha_nac  | date        | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+5 rows in set (0.0019 sec)
+ MySQL  localhost:3306 ssl  tbd3  SQL > select * from personas;
++------------+------------+------------+------------+------------+
+| rfc        | nombre     | ap_paterno | ap_materno | fecha_nac  |
++------------+------------+------------+------------+------------+
+| AVME       | EDGAR      | AVILA      | MUÑOZ      | 2004-05-24 |
+| AVME040524 | EDGAR      | AVILA      | MUÑOZ      | 2004-05-24 |
+| AVNE       | EDGAR      | AVILA      | NULL       | 2004-05-24 |
+| AVXE       | EDGAR      | AVILA      |            | 2004-05-24 |
+| MOMJ040810 | JUAN PABLO | MOTA       | MARQUEZ    | 2004-08-10 |
+| MOXJ040810 | JUAN PABLO | MOTA       |            | 2004-08-10 |
+| PEGJ051207 | JUAN       | PEREZ      | GONZALEZ   | 2005-12-07 |
++------------+------------+------------+------------+------------+
+7 rows in set (0.0152 sec)
+ MySQL  localhost:3306 ssl  tbd3  SQL > insert into personas value ("MAIE040510", "Matias", "Acosta", "Corona", "2004-05-10");
+Query OK, 1 row affected (0.0099 sec)
+ MySQL  localhost:3306 ssl  tbd3  SQL > select @mensaje;
++----------------------------+
+| @mensaje                   |
++----------------------------+
+| Persona agregada con exito |
++----------------------------+
+1 row in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  tbd3  SQL > create table bitacora (
+                                     -> descripcion varchar(50));
+Query OK, 0 rows affected (0.0327 sec)
+ MySQL  localhost:3306 ssl  tbd3  SQL > select * from bitacora;
+Empty set (0.0011 sec)
+ MySQL  localhost:3306 ssl  tbd3  SQL > delete from personas where rfc = "AVME";
+Query OK, 1 row affected (0.0063 sec)
+ MySQL  localhost:3306 ssl  tbd3  SQL > select * from bitacora;
++--------------------+
+| descripcion        |
++--------------------+
+| Borrado de persona |
++--------------------+
+1 row in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  tbd3  SQL > delete from personas where rfc = "AVNE";
+Query OK, 1 row affected (0.0149 sec)
+ MySQL  localhost:3306 ssl  tbd3  SQL > select * from bitacora;
++--------------------+
+| descripcion        |
++--------------------+
+| Borrado de persona |
+| BORRADOAVNE        |
++--------------------+
+2 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  tbd3  SQL > delete from personas where rfc = "AVXE";
+Query OK, 1 row affected (0.0064 sec)
+ MySQL  localhost:3306 ssl  tbd3  SQL > select * from bitacora;
++--------------------+
+| descripcion        |
++--------------------+
+| Borrado de persona |
+| BORRADOAVNE        |
+| BORRADO AVXE       |
++--------------------+
+3 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  tbd3  SQL > desc personas;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| rfc        | varchar(10) | NO   | PRI | NULL    |       |
+| nombre     | varchar(50) | NO   |     | NULL    |       |
+| ap_paterno | varchar(50) | NO   |     | NULL    |       |
+| ap_materno | varchar(50) | YES  |     | NULL    |       |
+| fecha_nac  | date        | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+5 rows in set (0.0019 sec)
+ MySQL  localhost:3306 ssl  tbd3  SQL > insert into personas (nombre, ap_paterno, ap_materno, fecha_nac) values
+                                     -> ("Esteban", "Mendoza", "Molinar", "1999-08-29");
+ERROR: 1054 (42S22): Unknown column 'generar_rfc' in 'field list'
+ MySQL  localhost:3306 ssl  tbd3  SQL > insert into personas (nombre, ap_paterno, ap_materno, fecha_nac) values ("Esteban", "Mendoza", "Molinar", "1999-08-29");
+Query OK, 1 row affected (0.0068 sec)
+ MySQL  localhost:3306 ssl  tbd3  SQL > select * from personas;
++------------+------------+------------+------------+------------+
+| rfc        | nombre     | ap_paterno | ap_materno | fecha_nac  |
++------------+------------+------------+------------+------------+
+| AVME040524 | EDGAR      | AVILA      | MUÑOZ      | 2004-05-24 |
+| MAIE040510 | Matias     | Acosta     | Corona     | 2004-05-10 |
+| MeME990829 | Esteban    | Mendoza    | Molinar    | 1999-08-29 |
+| MOMJ040810 | JUAN PABLO | MOTA       | MARQUEZ    | 2004-08-10 |
+| MOXJ040810 | JUAN PABLO | MOTA       |            | 2004-08-10 |
+| PEGJ051207 | JUAN       | PEREZ      | GONZALEZ   | 2005-12-07 |
++------------+------------+------------+------------+------------+
+6 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  tbd3  SQL >
